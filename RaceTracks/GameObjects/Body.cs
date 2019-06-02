@@ -56,6 +56,30 @@ namespace Racetracks
             acceleration += force;
         }
 
+        public void CollisionHandling(Body otherBody)
+        {
+            // 
+            Vector2 Direction = position - otherBody.position;
+            Direction.Normalize();
+            Direction *= (position - otherBody.position).Length() - radius - otherBody.radius;
+            // change the objects accordingly
+            velocity -= (Direction / 2) * (Mass * invMass);
+            otherBody.velocity += (Direction / 2) * (Mass * invMass);
+        }
+
+        public bool CollisionCheck(Body otherBody)
+        {
+            Vector2 positionDifference = position - otherBody.position;
+            float Difference = positionDifference.LengthSquared() - ((radius + otherBody.radius) * (radius + otherBody.radius));
+            positionDifference.Normalize();
+
+            if (Difference < 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>Returns closest point on this shape</summary>        
         public Vector2 GetClosestPoint(Vector2 point)
         {

@@ -33,14 +33,21 @@ namespace Racetracks
             base.HandleInput(inputHelper);
             // add corresponding keys to add forces to car     
             if (inputHelper.IsKeyDown(Keys.Left) || inputHelper.IsKeyDown(Keys.A))
+            { 
                 AddAngularForce(-RotationForce);
+            }
             if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
+            { 
                 AddAngularForce(RotationForce);
+            }
             if (inputHelper.IsKeyDown(Keys.Up) || inputHelper.IsKeyDown(Keys.W))
+            {
                 AddForce(Forward * AccelerationForce);
-            if (!inputHelper.IsKeyDown(Keys.Down) && !inputHelper.IsKeyDown(Keys.S))
-                return;
+            }
+            if (inputHelper.IsKeyDown(Keys.Down) && inputHelper.IsKeyDown(Keys.S))
+            {
                 AddForce(-Forward * AccelerationForce);
+            }
         }
     }
 }
