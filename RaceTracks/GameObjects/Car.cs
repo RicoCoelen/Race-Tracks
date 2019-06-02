@@ -5,7 +5,11 @@ using Microsoft.Xna.Framework.Input;
 namespace Racetracks
 {
     class Car : Body
-    { 
+    {
+        private float AccelerationForce = 5f;
+        private float RotationForce = 3f;
+        private float DriftForce = 0.5f;
+
         /// <summary>Creates a user controlled Car</summary>        
         public Car(Vector2 position) : base(position, "car")
         {
@@ -17,7 +21,10 @@ namespace Racetracks
         {
             base.Update(gameTime);
             // add smooth step to enhance driving experience
-            Velocity = Vector2.SmoothStep(Velocity, Forward * Velocity.Length(), 0.5f);
+            Vector2 TempVelocity = Vector2.SmoothStep(Velocity, Forward * Velocity.Length(), DriftForce);
+            // added clamp for max speed
+            velocity.X = MathHelper.Clamp(TempVelocity.X, -300, 300);
+            velocity.Y = MathHelper.Clamp(TempVelocity.Y, -300, 300);
         }
 
         /// <summary>Handle user input for this Car</summary>        
@@ -26,14 +33,14 @@ namespace Racetracks
             base.HandleInput(inputHelper);
             // add corresponding keys to add forces to car     
             if (inputHelper.IsKeyDown(Keys.Left) || inputHelper.IsKeyDown(Keys.A))
-                this.AddAngularForce(-3f);
+                AddAngularForce(-RotationForce);
             if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
-                this.AddAngularForce(3f);
+                AddAngularForce(RotationForce);
             if (inputHelper.IsKeyDown(Keys.Up) || inputHelper.IsKeyDown(Keys.W))
-                this.AddForce(Forward * 5f);
+                AddForce(Forward * AccelerationForce);
             if (!inputHelper.IsKeyDown(Keys.Down) && !inputHelper.IsKeyDown(Keys.S))
                 return;
-            this.AddForce(-Forward * 5f);
+                AddForce(-Forward * AccelerationForce);
         }
     }
 }

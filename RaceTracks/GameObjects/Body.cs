@@ -11,7 +11,7 @@ namespace Racetracks
         private Vector2 acceleration = Vector2.Zero;
         private float invMass = 1.0f; //set indirectly by setting 'mass'
         // add drag and angular velocity, acceleration
-        private float drag = 0.99f;
+        public float drag = 0.99f;
         private float angularVelocity;
         private float angularAcceleration;
         private float angularDrag = 0.90f;
