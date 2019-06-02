@@ -10,7 +10,13 @@ namespace Racetracks
         protected float radius;
         private Vector2 acceleration = Vector2.Zero;
         private float invMass = 1.0f; //set indirectly by setting 'mass'
-                
+        // add drag and angular velocity, acceleration
+        private float drag = 0.99f;
+        private float angularVelocity;
+        private float angularAcceleration;
+        private float angularDrag = 0.90f;
+        private bool rotation = true;
+
         /// <summary>Creates a physics body</summary>
         public Body(Vector2 position, string assetName) : base(assetName)
         {
@@ -25,6 +31,29 @@ namespace Racetracks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            // add speed according to physics
+            Velocity = Velocity + acceleration;
+            acceleration = Vector2.Zero;
+            // add the drag
+            Velocity = Velocity * drag;
+            // check if rotation is possible
+            if (rotation == true)
+            {   
+                Angle += angularVelocity;
+                angularVelocity += angularAcceleration;
+                angularAcceleration = 0.0f;
+                angularVelocity *= angularDrag;
+            }     
+        }
+
+        public void AddAngularForce(float force)
+        {
+            angularAcceleration += MathHelper.ToRadians(force * 0.1f);
+        }
+
+        public void AddForce(Vector2 force)
+        {
+            acceleration += force;
         }
 
         /// <summary>Returns closest point on this shape</summary>        
