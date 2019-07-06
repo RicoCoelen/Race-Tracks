@@ -9,6 +9,7 @@ namespace Racetracks
         private float AccelerationForce = 5f;
         private float RotationForce = 3f;
         private float DriftForce = 0.5f;
+        private float maxSpeed = 300f;
 
         /// <summary>Creates a user controlled Car</summary>        
         public Car(Vector2 position) : base(position, "car")
@@ -20,11 +21,19 @@ namespace Racetracks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
+            // normalize max speed
+            if (velocity.LengthSquared() > maxSpeed * maxSpeed)
+            {
+
+                velocity.Normalize();
+                velocity *= maxSpeed;
+
+            }
+
             // add smooth step to enhance driving experience
             Vector2 TempVelocity = Vector2.SmoothStep(Velocity, Forward * Velocity.Length(), DriftForce);
-            // added clamp for max speed
-            velocity.X = MathHelper.Clamp(TempVelocity.X, -300, 300);
-            velocity.Y = MathHelper.Clamp(TempVelocity.Y, -300, 300);
+
         }
 
         /// <summary>Handle user input for this Car</summary>        
@@ -44,9 +53,10 @@ namespace Racetracks
             {
                 AddForce(Forward * AccelerationForce);
             }
-            if (inputHelper.IsKeyDown(Keys.Down) && inputHelper.IsKeyDown(Keys.S))
+            if (inputHelper.IsKeyDown(Keys.Down) || inputHelper.IsKeyDown(Keys.S))
             {
                 AddForce(-Forward * AccelerationForce);
+
             }
         }
     }

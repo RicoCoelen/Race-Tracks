@@ -12,6 +12,7 @@ namespace Racetracks
         private float speed;
         private const float SteeringFactor = 0.1f;
         private const float SpeedMultiplier = 6f;
+        private float maxSpeed = 300.0f;
 
         /// <summary>Creates a waypoint driven Car</summary>        
         public CarNPC(Vector2 position, float speed, float offset) : base(position, "car2")
@@ -42,6 +43,14 @@ namespace Racetracks
 
             // add the force to the npc car
             AddForce(Forward * speed * direction * SpeedMultiplier);
+
+            if (velocity.LengthSquared() > maxSpeed * maxSpeed)
+            {
+
+                velocity.Normalize();
+                velocity *= maxSpeed;
+
+            }
         }
     }
 }

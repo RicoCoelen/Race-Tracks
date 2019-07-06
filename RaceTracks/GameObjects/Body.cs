@@ -31,6 +31,7 @@ namespace Racetracks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            acceleration *= Mass;
             // add speed according to physics
             Velocity = Velocity + acceleration;
             acceleration = Vector2.Zero;
@@ -69,10 +70,11 @@ namespace Racetracks
 
         public bool CollisionCheck(Body otherBody)
         {
+            // get the distance diffrence
             Vector2 positionDifference = position - otherBody.position;
             float Difference = positionDifference.LengthSquared() - ((radius + otherBody.radius) * (radius + otherBody.radius));
             positionDifference.Normalize();
-
+            // if collide
             if (Difference < 0)
             {
                 return true;
