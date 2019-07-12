@@ -30,10 +30,6 @@ namespace Racetracks
                 velocity *= maxSpeed;
 
             }
-
-            // add smooth step to enhance driving experience
-            Vector2 TempVelocity = Vector2.SmoothStep(Velocity, Forward * Velocity.Length(), DriftForce);
-
         }
 
         /// <summary>Handle user input for this Car</summary>        

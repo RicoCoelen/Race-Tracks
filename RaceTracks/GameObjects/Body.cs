@@ -31,9 +31,8 @@ namespace Racetracks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            acceleration *= Mass;
             // add speed according to physics
-            Velocity = Velocity + acceleration;
+            Velocity += acceleration;
             acceleration = Vector2.Zero;
             // add the drag
             Velocity = Velocity * drag;
@@ -54,12 +53,13 @@ namespace Racetracks
 
         public void AddForce(Vector2 force)
         {
-            acceleration += force;
+            // added mass to addforce function
+            acceleration += force * Mass;
         }
 
         public void CollisionHandling(Body otherBody)
         {
-            // 
+            // get collision normal
             Vector2 Direction = position - otherBody.position;
             Direction.Normalize();
             Direction *= (position - otherBody.position).Length() - radius - otherBody.radius;

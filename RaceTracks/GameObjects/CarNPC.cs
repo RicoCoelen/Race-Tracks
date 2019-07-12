@@ -44,6 +44,7 @@ namespace Racetracks
             // add the force to the npc car
             AddForce(Forward * speed * direction * SpeedMultiplier);
 
+            // normalize
             if (velocity.LengthSquared() > maxSpeed * maxSpeed)
             {
 
